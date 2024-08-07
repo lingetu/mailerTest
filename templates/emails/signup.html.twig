@@ -1,0 +1,73 @@
+{# templates/emails/welcome.html.twig #}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Bienvenue chez Guest Care</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+        }
+        .header {
+            background-color: #f8f8f8;
+            padding: 20px;
+            text-align: center;
+        }
+        .content {
+            padding: 20px;
+        }
+        .footer {
+            background-color: #f8f8f8;
+            padding: 10px;
+            text-align: center;
+            font-size: 12px;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Guest Care</h1>
+        <p>Votre partenaire hôtelier de confiance</p>
+    </div>
+    <div class="content">
+        <h2>Bonjour {{ client_name }},</h2>
+        <p>
+            Nous sommes ravis de vous accueillir chez Guest Care ! En tant que nouveau membre, vous avez désormais accès à une gamme complète de services conçus pour améliorer l'expérience de vos clients et optimiser vos opérations hôtelières.
+        </p>
+        <h3>Nos Services</h3>
+        <p>
+            Voici un aperçu des services que nous offrons :
+        </p>
+        <ul>
+            <li>Service de conciergerie 24/7</li>
+            <li>Réservations de restaurants et d'activités</li>
+            <li>Gestion des événements et des conférences</li>
+            <li>Support client dédié</li>
+        </ul>
+        <h3>Comment Commencer</h3>
+        <p>
+            Pour commencer à utiliser nos services, veuillez suivre les étapes suivantes :
+        </p>
+        <ol>
+            <li>Connectez-vous à votre compte sur notre site web : <a href="https://www.guestcare.com/login">https://www.guestcare.com/login</a></li>
+            <li>Explorez les différentes sections pour découvrir nos services.</li>
+            <li>Contactez notre équipe de support pour toute assistance ou question.</li>
+        </ol>
+        <p>
+            Pour toute question ou pour discuter de vos besoins spécifiques, n'hésitez pas à nous contacter à l'adresse suivante : <a href="mailto:support@guestcare.com">support@guestcare.com</a>.
+        </p>
+        <p>
+            Merci de votre confiance et au plaisir de collaborer avec vous.
+        </p>
+        <p>
+            Cordialement,<br>
+            L'équipe Guest Care
+        </p>
+    </div>
+    <div class="footer">
+        <p>&copy; {{ "now"|date("Y") }} Guest Care. Tous droits réservés.</p>
+    </div>
+</body>
+</html>

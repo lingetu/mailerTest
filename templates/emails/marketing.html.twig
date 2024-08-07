@@ -1,0 +1,87 @@
+{# templates/emails/marketing.html.twig #}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Découvrez les Services de Guest Care</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+        }
+        .header {
+            background-color: #f8f8f8;
+            padding: 20px;
+            text-align: center;
+        }
+        .content {
+            padding: 20px;
+        }
+        .footer {
+            background-color: #f8f8f8;
+            padding: 10px;
+            text-align: center;
+            font-size: 12px;
+            color: #666;
+        }
+        .button {
+            display: inline-block;
+            padding: 10px 20px;
+            margin: 20px 0;
+            font-size: 16px;
+            color: #fff;
+            background-color: #007BFF;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Guest Care</h1>
+        <p>Votre partenaire hôtelier de confiance</p>
+    </div>
+    <div class="content">
+        <h2>Bonjour,</h2>
+        <p>
+            Chez Guest Care, nous comprenons l'importance de fournir une expérience exceptionnelle à vos clients. C'est pourquoi nous avons développé une gamme complète de services pour vous aider à atteindre cet objectif.
+        </p>
+        <h3>Nos Services</h3>
+        <p>
+            Voici quelques-uns des services que nous offrons :
+        </p>
+        <ul>
+            <li>Service de conciergerie 24/7</li>
+            <li>Réservations de restaurants et d'activités</li>
+            <li>Gestion des événements et des conférences</li>
+            <li>Support client dédié</li>
+        </ul>
+        <h3>Pourquoi Choisir Guest Care ?</h3>
+        <p>
+            En choisissant Guest Care, vous bénéficiez de :
+        </p>
+        <ul>
+            <li>Une équipe de professionnels dévoués</li>
+            <li>Des solutions personnalisées pour répondre à vos besoins spécifiques</li>
+            <li>Un support client disponible à tout moment</li>
+            <li>Une amélioration de la satisfaction de vos clients</li>
+        </ul>
+        <p>
+            Ne manquez pas l'opportunité de transformer l'expérience de vos clients. Contactez-nous dès aujourd'hui pour en savoir plus sur nos services et comment nous pouvons vous aider à atteindre vos objectifs.
+        </p>
+        <p>
+            <a href="https://www.guestcare.com/contact" class="button">Contactez-nous</a>
+        </p>
+        <p>
+            Merci de votre attention et au plaisir de collaborer avec vous.
+        </p>
+        <p>
+            Cordialement,<br>
+            L'équipe Guest Care
+        </p>
+    </div>
+    <div class="footer">
+        <p>&copy; {{ "now"|date("Y") }} Guest Care. Tous droits réservés.</p>
+    </div>
+</body>
+</html>

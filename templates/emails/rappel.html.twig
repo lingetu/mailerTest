@@ -1,0 +1,70 @@
+{# templates/emails/rappel_paiement.html.twig #}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Guest Care - Rappel de Paiement</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+        }
+        .header {
+            background-color: #f8f8f8;
+            padding: 20px;
+            text-align: center;
+        }
+        .content {
+            padding: 20px;
+        }
+        .footer {
+            background-color: #f8f8f8;
+            padding: 10px;
+            text-align: center;
+            font-size: 12px;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Guest Care</h1>
+        <p>Votre partenaire hôtelier de confiance</p>
+    </div>
+    <div class="content">
+        <h2>Bonjour {{ client_name }},</h2>
+        <p>
+            Nous vous écrivons pour vous rappeler que votre paiement pour les services Guest Care est en attente. Voici les détails de votre facture :
+        </p>
+        <p>
+            <strong>Montant dû :</strong> {{ montant_du }}<br>
+            <strong>Date d'échéance :</strong> {{ date_echeance }}
+        </p>
+        <p>
+            Nous vous serions reconnaissants de bien vouloir effectuer le paiement dès que possible pour éviter toute interruption de service.
+        </p>
+        <h3>Instructions de Paiement</h3>
+        <p>
+            Vous pouvez effectuer le paiement en utilisant l'une des méthodes suivantes :
+        </p>
+        <ul>
+            <li>Virement bancaire : <strong>IBAN :</strong> {{ iban }}, <strong>BIC :</strong> {{ bic }}</li>
+            <li>Carte de crédit via notre portail sécurisé : <a href="https://www.guestcare.com/payment">https://www.guestcare.com/payment</a></li>
+            <li>Chèque à l'ordre de Guest Care, envoyé à l'adresse suivante : {{ adresse_postale }}</li>
+        </ul>
+        <p>
+            Si vous avez déjà effectué le paiement, veuillez ignorer ce message. Pour toute question ou assistance, n'hésitez pas à nous contacter à l'adresse suivante : <a href="mailto:support@guestcare.com">support@guestcare.com</a>.
+        </p>
+        <p>
+            Merci de votre promptitude et de votre collaboration.
+        </p>
+        <p>
+            Cordialement,<br>
+            L'équipe Guest Care
+        </p>
+    </div>
+    <div class="footer">
+        <p>&copy; {{ "now"|date("Y") }} Guest Care. Tous droits réservés.</p>
+    </div>
+</body>
+</html>

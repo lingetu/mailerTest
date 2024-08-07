@@ -1,0 +1,103 @@
+{# templates/emails/compte_rendu.html.twig #}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Guest Care - Compte Rendu de Performance</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+        }
+        .header {
+            background-color: #f8f8f8;
+            padding: 20px;
+            text-align: center;
+        }
+        .content {
+            padding: 20px;
+        }
+        .footer {
+            background-color: #f8f8f8;
+            padding: 10px;
+            text-align: center;
+            font-size: 12px;
+            color: #666;
+        }
+        .stats {
+            margin: 20px 0;
+        }
+        .stats table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .stats th, .stats td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        .stats th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Guest Care</h1>
+        <p>Votre partenaire hôtelier de confiance</p>
+    </div>
+    <div class="content">
+        <h2>Bonjour {{ client_name }},</h2>
+        <p>
+            Nous sommes ravis de vous présenter le compte rendu de performance pour la période récente. Chez Guest Care, nous nous engageons à vous fournir des services de qualité pour garantir la satisfaction de vos clients.
+        </p>
+        <h3>Résumé des Performances</h3>
+        <p>
+            Voici un aperçu des performances de vos services au cours de la période :
+        </p>
+        <div class="stats">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Indicateur</th>
+                        <th>Valeur</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Taux de satisfaction client</td>
+                        <td>{{ satisfaction_rate }}%</td>
+                    </tr>
+                    <tr>
+                        <td>Nombre de réservations</td>
+                        <td>{{ reservation_count }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <h3>Recommandations</h3>
+        <p>
+            Basé sur les performances actuelles, nous vous recommandons les actions suivantes pour améliorer encore plus vos services :
+        </p>
+        <ul>
+            <li>Augmenter la formation du personnel pour améliorer le taux de satisfaction client.</li>
+            <li>Promouvoir les services de conciergerie pour augmenter le nombre de réservations.</li>
+            <li>Organiser des événements plus fréquemment pour attirer plus de clients.</li>
+            <li>Améliorer le temps de réponse du support client pour une meilleure satisfaction.</li>
+        </ul>
+        <p>
+            Pour toute question ou pour discuter de ces recommandations, n'hésitez pas à nous contacter à l'adresse suivante : <a href="mailto:support@guestcare.com">support@guestcare.com</a>.
+        </p>
+        <p>
+            Merci de votre confiance et au plaisir de collaborer avec vous.
+        </p>
+        <p>
+            Cordialement,<br>
+            L'équipe Guest Care
+        </p>
+    </div>
+    <div class="footer">
+        <p>&copy; {{ "now"|date("Y") }} Guest Care. Tous droits réservés.</p>
+    </div>
+</body>
+</html>
