@@ -17,6 +17,13 @@ class GhostAPIController extends AbstractController
         $request = Request::createFromGlobals();
 
         $logger->info($request);
+        $data=json_decode($request->getContent(),true);
+        $logger->info('Decoded data: ' . print_r($data, true));
+        return new Response(
+            json_encode(['message' => 'Données fantome récupérées avec succès']),
+            Response::HTTP_OK,
+            ['content-type' => 'application/json']
+        );
 
         if  ($request)
         {

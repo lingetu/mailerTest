@@ -33,63 +33,80 @@ class ContactController extends AbstractController
             // create a new email
             $token='coucou';
             
-           
+            $postData = [
+                'email' => $adresse,
+                'content' => $contenu,
+                'template' => $template
+            ];
+
+            
+            // Encodez le tableau en JSON
+            $jsonData = json_encode($postData);
            
         $logger->info('EXEC CURL');
         
       
-        try {
-            $ch = curl_init();
+        
+        $ch = curl_init();
 
-            curl_setopt_array($ch, [
-            CURLOPT_URL => 'localhost:8080/ghostapi',
-            CURLOPT_RETURNTRANSFER => false,
-            CURLOPT_ENCODING => '',
-            CURLOPT_TIMEOUT => 30,
-            CURLOPT_CONNECTTIMEOUT => 30,
-            CURLOPT_CUSTOMREQUEST => 'GET',
-            CURLOPT_HTTPHEADER => [
-                'Authorization: Bearer '.$token,
-                'Content-Type: application/json'
-            ],
-            CURLOPT_SSL_VERIFYHOST => false,
-            CURLOPT_SSL_VERIFYPEER => false
-        ]);
+        curl_setopt($ch, CURLOPT_URL, 'http://localhost:8080/ghostapi');
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+        $headers = array(
+            "Accept: application/json",
+            "Content-Type: application/json",
+        );
+
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        $data = <<<DATA
+            {
+            "email": "$adresse",
+            "content": "$contenu",
+            "template": "$template"
+            }
+        DATA;
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+        // $response = curl_exec($ch);
+        dd(curl_exec($ch));
+        curl_close($ch);
+        
+        
         
             // Check if initialization had gone wrong*    
-            if ($ch === false) {
-                throw new Exception('failed to initialize');
-            }
+            // if ($ch === false) {
+            //     throw new Exception('failed to initialize');
+            // }
         
             // Better to explicitly set URL
             
-            $response = curl_exec($ch);
+            // $response = curl_exec($ch);
         
             // Check the return value of curl_exec(), too
-            if ($response === false) {
-                throw new Exception(curl_error($ch), curl_errno($ch));
-            }
+            // if ($response === false) {
+            //     throw new Exception(curl_error($ch), curl_errno($ch));
+            // }
         
             // Check HTTP return code, too; might be something else than 200
-            $httpReturnCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        //     $httpReturnCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
         
-            if ($httpReturnCode !== 200) {
-                throw new Exception('HTTP response code was ' . $httpReturnCode);
-            }
+        //     if ($httpReturnCode !== 200) {
+        //         throw new Exception('HTTP response code was ' . $httpReturnCode);
+        //     }
         
-        } catch(Exception $e) {
+        // } catch(Exception $e) {
         
-            trigger_error(sprintf(
-                'Curl failed with error #%d: %s',
-                $e->getCode(), $e->getMessage()),
-                E_USER_ERROR);
+        //     trigger_error(sprintf(
+        //         'Curl failed with error #%d: %s',
+        //         $e->getCode(), $e->getMessage()),
+        //         E_USER_ERROR);
         
-        } finally {
-            // Close curl handle unless it failed to initialize
-            if (is_resource($ch)) {
-                curl_close($ch);
-            }
-        }
+        // } finally {
+        //     // Close curl handle unless it failed to initialize
+        //     if (is_resource($ch)) {
+        //         curl_close($ch);
+        //     }
+        // }
         //dd de l'header de la réponse
         
         // $logger->info('TEST');
