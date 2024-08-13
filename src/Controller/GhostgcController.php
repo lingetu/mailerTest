@@ -41,7 +41,7 @@ class GhostgcController extends AbstractController
         $data = <<<DATA
             {
             "email": "$email",
-            "content": "$contents",
+            "content": "$content",
             "template": "$template"
             }
         DATA;
