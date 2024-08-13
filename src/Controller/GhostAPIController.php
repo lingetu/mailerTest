@@ -5,6 +5,7 @@ namespace App\Controller;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use App\Form\ContactType;
 use Psr\Log\LoggerInterface;
+
 use Symfony\Component\String\UnicodeString;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -114,7 +115,7 @@ class GhostAPIController extends AbstractController
                 try {
                     $mailer->send($email);
                     $logger->info('Mail envoyé');
-                    
+
                     return new Response(
                         'ENVOIE MAIL FAIT',
                         Response::HTTP_OK,
