@@ -44,21 +44,15 @@ class ContactController extends AbstractController
             $jsonData = json_encode($postData);
            
         $logger->info('EXEC CURL');
-        
-      
-        
         $ch = curl_init();
-
-        curl_setopt($ch, CURLOPT_URL, 'http://localhost:8080/ghostapi');
-        curl_setopt($ch, CURLOPT_POST, true);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-
+        
+        //define header
         $headers = array(
             "Accept: application/json",
             "Content-Type: application/json",
+            "Authorization: Bearer $token",
         );
-
-        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        //define data
         $data = <<<DATA
             {
             "email": "$adresse",
@@ -66,47 +60,60 @@ class ContactController extends AbstractController
             "template": "$template"
             }
         DATA;
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
-        // $response = curl_exec($ch);
-        dd(curl_exec($ch));
+        
+        //define options
+        $options = array(
+            CURLOPT_URL => 'http://localhost:8000/ghostgc',
+            CURLOPT_POST => true,
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_HTTPHEADER => $headers,
+            CURLOPT_POSTFIELDS => $data,
+        );
+        
+
+
+        curl_setopt_array($ch, $options);
+        $response = curl_exec($ch);
         curl_close($ch);
         
         
+        try{
         
             // Check if initialization had gone wrong*    
-            // if ($ch === false) {
-            //     throw new Exception('failed to initialize');
-            // }
+            if ($ch === false) {
+                throw new Exception('failed to initialize');
+            }
         
             // Better to explicitly set URL
             
             // $response = curl_exec($ch);
         
             // Check the return value of curl_exec(), too
-            // if ($response === false) {
-            //     throw new Exception(curl_error($ch), curl_errno($ch));
-            // }
+            if ($response === false) {
+                throw new Exception(curl_error($ch), curl_errno($ch));
+            }
         
             // Check HTTP return code, too; might be something else than 200
-        //     $httpReturnCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+            $httpReturnCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
         
-        //     if ($httpReturnCode !== 200) {
-        //         throw new Exception('HTTP response code was ' . $httpReturnCode);
-        //     }
+            if ($httpReturnCode !== 200) {
+                throw new Exception('HTTP response code was ' . $httpReturnCode);
+            }
         
-        // } catch(Exception $e) {
+        }catch(Exception $e) {
         
-        //     trigger_error(sprintf(
-        //         'Curl failed with error #%d: %s',
-        //         $e->getCode(), $e->getMessage()),
-        //         E_USER_ERROR);
+            trigger_error(sprintf(
+                'Curl failed with error #%d: %s',
+                $e->getCode(), $e->getMessage()),
+                E_USER_ERROR);
         
-        // } finally {
-        //     // Close curl handle unless it failed to initialize
-        //     if (is_resource($ch)) {
-        //         curl_close($ch);
-        //     }
-        // }
+        } finally {
+            // Close curl handle unless it failed to initialize
+            if (is_resource($ch)) {
+                curl_close($ch);
+            }
+        }
+    
         //dd de l'header de la réponse
         
         // $logger->info('TEST');
@@ -123,80 +130,10 @@ class ContactController extends AbstractController
         
        
             if(true){
-               return new Response(
-                json_encode(['message' => 'Données fantome récupérées avec succès']),
-                Response::HTTP_OK,
-                ['content-type' => 'application/json']
-            );
+            dd($response);
             }
-
-            if ($template == 'emails/signup.html.twig') {
-                $email = (new TemplatedEmail())
-                ->from($adresse)
-                ->to('you@example.com')
-                ->subject('Contact')
-                ->text($contenu)
-                ->htmlTemplate('emails/signup.html.twig')
-                ->locale('de')
-                ->context([
-                    'expiration_date' => new \DateTime('+7 days'),
-                    'client_name' => 'foo',
-                ]);
-            } elseif ($template == 'emails/rappel.html.twig') {
-                $email = (new TemplatedEmail())
-                ->from($adresse)
-                ->to('you@example.com')
-                ->subject('Contact')
-                ->text($contenu)
-                ->htmlTemplate('emails/rappel.html.twig')
-                ->locale('de')
-                ->context([
-                    'expiration_date' => new \DateTime('+7 days'),
-                    'client_name' => 'foo',
-                    'montant_du' => 'montant_du',
-                    'date_echeance' => 'date_echeance',
-                    'iban'  => 'iban',
-                    'bic' => 'bic',
-                    'adresse_postale' => 'adresse_postale',
-                ]);
-            } elseif ($template == 'emails/compterendu.html.twig') {
-                $email = (new TemplatedEmail())
-                ->from($adresse)
-                ->to('you@exemple.com')
-                ->subject('Contact')
-                ->text($contenu)
-                ->htmlTemplate('emails/compterendu.html.twig')
-                ->locale('de')
-                ->context([
-                    'expiration_date' => new \DateTime('+7 days'),
-                    'client_name' => 'foo',
-                    'satisfaction_rate' => 'satisfaction_rate',
-                    'reservation_count' => 'reservation_count',
-                ]);
-            } elseif ($template == 'emails/marketing.html.twig') {
-                $email = (new TemplatedEmail())
-                ->from($adresse)
-                ->to('you@exemple.com')
-                ->subject('Contact')
-                ->text($contenu)
-                ->htmlTemplate('emails/marketing.html.twig')
-                ->locale('de')
-                ->context([
-                    'expiration_date' => new \DateTime('+7 days'),
-                ]);
-            }
-
-
-                
-                try {
-                    $mailer->send($email);
-                    $logger->info('Mail envoyé');
-                    dd($email);
-                } catch (TransportExceptionInterface $e) {
-                    $logger->error('Erreur lors de l\'envoi du mail : '.$e->getMessage());
-
-
-                }
+            
+            
         }
 
         return $this->render('contact/index.html.twig', [
