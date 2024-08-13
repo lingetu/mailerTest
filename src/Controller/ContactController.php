@@ -128,10 +128,6 @@ class ContactController extends AbstractController
         //     $logger->info('I just got the logger');
         // $logger->info($test);
         
-       
-            if(true){
-            dd($response);
-            }
             
             
         }
