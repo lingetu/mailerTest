@@ -10,10 +10,14 @@ use Psr\Log\LoggerInterface;
 
 class GhostgcController extends AbstractController
 {
+
+    
     #[Route('/ghostgc', name: 'app_ghostgc')]
     public function index(LoggerInterface $logger): Response
     {
+        
         $request = Request::createFromGlobals();
+
         // REQUEST FROM FRONT
 
             // $logger->info('GC SUCCES');
@@ -28,14 +32,10 @@ class GhostgcController extends AbstractController
             $data = json_decode($request->getContent(), true);
 
         // Extraire les champs spécifiques
+
         $email = $data['email'] ?? null;
         $template = $data['template'] ?? null;
-        $content = $data['content'] ?? null;
-
-        // Logger les champs récupérés
-        $logger->info('Email: ' . $email);
-        $logger->info('Template: ' . $template);
-        $logger->info('Content: ' . $content);      
+        $content = $data['content'] ?? null;     
         // Logger les données récupérées
 
         $data = <<<DATA
@@ -49,19 +49,17 @@ class GhostgcController extends AbstractController
         if  ($request)
         {
             $authorizationHeader = $request->headers->get('Authorization');
-            if($authorizationHeader==='Bearer coucou')
+            $id = $request->headers->get('id');
+            if($authorizationHeader && $id)
             {
-               $logger->info('Token valide GC ');
-
-              
-
                //CURL GET FOR AUTH TO SERVICE
                $ch = curl_init();
 
                $headers = array(
                 "Accept: application/json",
                 "Content-Type: application/json",
-                "Authorization: Bearer coucou",
+                "Authorization: $authorizationHeader",
+                "id: $id",
             );
         
               
@@ -70,9 +68,11 @@ class GhostgcController extends AbstractController
                 CURLOPT_URL => 'http://localhost:8003/ghostservices',
                 CURLOPT_RETURNTRANSFER => true,
                 CURLOPT_HTTPHEADER => $headers,
+
             );
 
-                $logger->info('EXEC CURL GET AUTH SERVICES');
+
+
 
                 curl_setopt_array($ch, $options);
                 $response = curl_exec($ch);
@@ -91,16 +91,12 @@ class GhostgcController extends AbstractController
                 
                 //get header from response
                 $header_size = curl_getinfo($ch, CURLINFO_HEADER_SIZE);
-                $autorizationheader = substr($response, 0, $header_size);
-
-                $logger->info('HEADER');
-                $logger->info($autorizationheader);
+                $scope = substr($response, 0, $header_size);
 
 
-                if($autorizationheader ==='COUCOU2' && $httpReturnCode === 200 && $response)
+
+                if($httpReturnCode === 200 && $response)
                 {
-
-                    $logger->info('Token valide GC TO MAIL SERVICE');
 
                     $cu= curl_init();
 
@@ -109,13 +105,13 @@ class GhostgcController extends AbstractController
                     $headers = array(
                         "Accept: application/json",
                         "Content-Type: application/json",
-                       "Authorization:" . $autorizationheader,
+                        "Authorization: $scope",
                     );
         
               
-              //define OPTIONS  
+                    //define OPTIONS  
                     $options = array(
-                        CURLOPT_URL => 'http://localhost:8002/ghostmailer',
+                        CURLOPT_URL => 'http://localhost:8003/ghostservices',
                         CURLOPT_RETURNTRANSFER => true,
                         CURLOPT_POST => true,
                         CURLOPT_HTTPHEADER => $headers,
@@ -130,9 +126,6 @@ class GhostgcController extends AbstractController
                     curl_close($cu);
                     
                     $httpReturnCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-        
-                    $logger->info('HTTP CODE');
-                    $logger->info($httpReturnCode);
 
                     if ($httpReturnCode !== 200) {
                         return new Response(
@@ -159,7 +152,6 @@ class GhostgcController extends AbstractController
             }
             else
             {
-                $logger->info('Token invalide');
                 return new Response(
                     'INVALIDE TOKEN',
                      Response::HTTP_UNAUTHORIZED,
@@ -169,7 +161,6 @@ class GhostgcController extends AbstractController
             
         }else
         {
-            $logger->info('REQUEST VIDE');
             return new Response(
                 'REQUETE VIDE',
                  Response::HTTP_UNAUTHORIZED,
