@@ -2,6 +2,10 @@
 
 namespace App\Controller;
 
+//onpageload
+
+use function App\onPageLoad;
+
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use App\Form\ContactType;
 use Psr\Log\LoggerInterface;
@@ -21,36 +25,30 @@ class ContactController extends AbstractController
     #[Route('/contact', name: 'app_contact')]
     public function index(Request $request, MailerInterface $mailer, LoggerInterface $logger): Response
     {
+        //simuler token créer lors de la connexion
+        $token=$this->onPageLoad($logger);
+
+
         $form = $this->createForm(ContactType::class);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
             $data = $form->getData();
 
             $adresse = $data['email'];
             $contenu = $data['Content'];
             $template = $data['Template'];
-            // create a new email
-            $token='coucou';
+    
             
-            $postData = [
-                'email' => $adresse,
-                'content' => $contenu,
-                'template' => $template
-            ];
-
-            
-            // Encodez le tableau en JSON
-            $jsonData = json_encode($postData);
-           
-        $logger->info('EXEC CURL');
         $ch = curl_init();
         
         //define header
         $headers = array(
             "Accept: application/json",
             "Content-Type: application/json",
-            "Authorization: Bearer $token",
+            "Authorization: $token",
+            "id:1",
         );
         //define data
         $data = <<<DATA
@@ -61,6 +59,8 @@ class ContactController extends AbstractController
             }
         DATA;
         
+
+
         //define options
         $options = array(
             CURLOPT_URL => 'http://localhost:8000/ghostgc',
@@ -136,5 +136,39 @@ class ContactController extends AbstractController
             'controller_name' => 'ContactController',
             'formulaire' => $form
         ]);
+    }
+
+   
+    private function onPageLoad(LoggerInterface $logger): string
+    {
+
+        //curl to services to get first ghost token
+
+        $ch = curl_init();
+        $headers = array(
+            "Accept: application/json",
+            "Content-Type: application/json",
+            "Goal: co",
+
+        );
+
+        $options = array(
+            CURLOPT_URL => 'http://localhost:8003/ghostservices',
+            CURLOPT_POST => true,
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_HTTPHEADER => $headers,
+        );
+
+        curl_setopt_array($ch, $options);
+        $response = curl_exec($ch);
+
+        //get header response
+
+        $header_size = curl_getinfo($ch, CURLINFO_HEADER_SIZE); 
+        $header = substr($response, 0, $header_size);
+
+        
+        
+        return $header;	
     }
 }
