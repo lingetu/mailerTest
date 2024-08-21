@@ -71,7 +71,7 @@ class ContactController extends AbstractController
         );
         
 
-
+ $logger->info('Envoie requête au service GC pour envoie de mail');
         curl_setopt_array($ch, $options);
         $response = curl_exec($ch);
         curl_close($ch);
