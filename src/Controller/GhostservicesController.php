@@ -23,6 +23,7 @@ class GhostservicesController extends AbstractController  {
 
     public JwtService $jwtService;
     
+    
 
     public function __construct( JwtService $jwtService ) {
         $this->jwtService = $jwtService;
