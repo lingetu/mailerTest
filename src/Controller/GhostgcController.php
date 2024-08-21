@@ -48,6 +48,7 @@ class GhostgcController extends AbstractController
 
         if  ($request)
         {
+            $logger->info('Demande d\'authentification pour envoie de mail depuis GC CORE');
             $authorizationHeader = $request->headers->get('Authorization');
             $id = $request->headers->get('id');
             if($authorizationHeader && $id)
@@ -119,7 +120,7 @@ class GhostgcController extends AbstractController
                         // CURLOPT_POSTFIELDS => $data,
                     );
 
-                    $logger->info('EXEC CURL POST MAIL SERVICES');
+                    $logger->info('Demande d\'envoie de mail depuis GC CORE');
                     curl_setopt_array($cu, $options);
 
                     $response = curl_exec($cu);
