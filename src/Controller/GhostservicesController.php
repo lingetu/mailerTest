@@ -49,6 +49,7 @@ class GhostservicesController extends AbstractController  {
 
             if ( $goal === 'co' ) {
 
+                $logger->info('Simulation de connexion avec token de connexion REPONSE SERVICE');
                 $payload =  [
                     'auth' => true,
                     'sendMail' => false,
@@ -81,6 +82,8 @@ class GhostservicesController extends AbstractController  {
 
                     $this->jwtService->stockScopeMail( $id, $scopeMail );
 
+                    
+
                     $payload = [
                         'auth' => false,
                         'sendMail' => true,
@@ -88,6 +91,7 @@ class GhostservicesController extends AbstractController  {
                         'id' => $id,
                     ];
                     
+                    $logger->info('Demande d\'authentification pour demande d\'envoie de mail REPONSE SERVICE');
 
                     $token = $this->jwtService->createToken( $payload );
 
@@ -100,6 +104,8 @@ class GhostservicesController extends AbstractController  {
                 } elseif ( $token && $token[ 'sendMail' ] === true && $token[ 'auth' ] === false ) {
 
                     if ( $token[ 'scopeMail' ] === $this->jwtService->getScopeMail( $token[ 'id' ] ) ) {
+
+                         $logger->info('Demande d\'envoie de mail');
 
                     $data = json_decode( $request->getContent(), true );
 
@@ -149,7 +155,7 @@ class GhostservicesController extends AbstractController  {
     function sendEmail( $logger, $mailer, $email, $template, $content ): Response  {
 
         if ( $template && $content && $email ) {
-
+            $logger->info( 'Envoie de mail SERVICE' );
 
             if ( $template == 'emails/signup.html.twig' ) {
                 $email = ( new TemplatedEmail() )
